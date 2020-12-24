@@ -1,0 +1,17 @@
+{
+  "name": "factor11",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".hyper.js",
+  "scripts": {
+    "test": "mocha --timeout 10000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mocha": "^8.2.1",
+    "mongoose": "^5.11.8"
+  }
+}
