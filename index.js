@@ -3,10 +3,13 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const blogRoute= require('./Routes/BlogRoute');
+const authRoute = require('./Routes/AuthRoute');
 
+app.use(express.json());
 
 mongoose.connect(
   "mongodb://localhost/blog",
+  { useUnifiedTopology: true ,useNewUrlParser: true} ,
   () => {
     console.log("Connexion a la base de donnee effectue");
     app.listen(3000, () => {
@@ -22,6 +25,9 @@ app.get("/", (req, res) => {
 
 
 app.use('/blog',blogRoute)
+
+app.use('/auth',authRoute)
+
 
 // app.get("/about", (req, res) => {
 //   res.send("Welcome to about page");
