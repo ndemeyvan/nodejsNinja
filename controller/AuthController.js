@@ -1,4 +1,5 @@
 const userModel = require("../models/userModel");
+//use for json web token
 const jwt = require('jsonwebtoken');
 const register = (req, res) => {
 
@@ -44,12 +45,12 @@ const getAllUser = (req, res) => {
     })
 };
 
+/// generate the json web token
 const createToken=(id) => jwt.sign({id:id},'authentication_token_secret',{
     expiresIn:maxAge,
 });
 
 const maxAge = 3 * 24 * 60 * 60;
-
 
 module.exports = {
   register,
