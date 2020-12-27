@@ -10,8 +10,12 @@ const register = (req, res) => {
         res.status(201).json(user);
       })
       .catch((err) => {
-        console.log(err);
-        res.status(400).send(err);
+        console.log(err.message ,err.code);
+        // res.status(400).send(err.message ,err.code);
+        if (err.code === 11000 ) {
+            res.send(`The email : ${req.body.email} already exit `);
+        }
+        res.send(err.message);
         
       });
 };
