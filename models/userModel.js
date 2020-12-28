@@ -30,8 +30,21 @@ userSchema.pre("save", function (next) {
       next();
     });
   });
-  console.log("New user want to be save : ", this);
 });
+
+
+// static method to login user
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("incorrect password");
+  }
+  throw Error("incorrect email");
+};
 
 const user = mongoose.model("users", userSchema);
 module.exports = user;

@@ -19,7 +19,6 @@ mongoose.connect(
 );
 
 app.get("/", (req, res) => {
-  console.log("Hello world");
   res.send("Welcome to Blog server");
 });
 
