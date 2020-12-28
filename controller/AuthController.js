@@ -1,9 +1,45 @@
 const userModel = require("../models/userModel");
 //use for json web token
 const jwt = require("jsonwebtoken");
+
+// handle errors
+const handleErrors = (err) => {
+  console.log(err.message, err.code);
+  let errors = { email: "", password: "" };
+
+  // incorrect email
+  if (err.message === "incorrect email") {
+    errors.email = "That email is not registered";
+  }
+
+  // incorrect password
+  if (err.message === "incorrect password") {
+    errors.password = "That password is incorrect";
+  }
+
+  // duplicate email error
+  if (err.code === 11000) {
+    errors.email = "that email is already registered";
+    return errors;
+  }
+
+  // validation errors
+  if (err.message.includes("user validation failed")) {
+    // console.log(err);
+    Object.values(err.errors).forEach(({ properties }) => {
+      // console.log(val);
+      // console.log(properties);
+      errors[properties.path] = properties.message;
+    });
+  }
+
+  return errors;
+};
+
 const register = (req, res) => {
   const { email, password } = req.body;
   const user = new userModel({ email, password });
+
   user
     .save()
     .then((result) => {
@@ -18,24 +54,28 @@ const register = (req, res) => {
       if (err.code === 11000) {
         res.send(`The email : ${req.body.email} already exit `);
       }
+      //  const errors = handleErrors(err);
+      //     res.status(400).json({ errors });
       res.send(err.message);
     });
 };
 
-const login = async (req, res) => {
+const login = (req, res) => {
   const { email, password } = req.body;
-  try {
-    userModel.login(email, password).then((result) => {
+  userModel
+    .login(email, password)
+    .then((result) => {
       res.status(201).json({
         user: result,
         jwt: createToken(result._id),
       });
+    })
+    .catch((err) => {
+      const errors = handleErrors(err);
+      res.status(400).json({ errors });
     });
-  } catch (error) {
-    res.status(401).json({});
-    console.log("Error", error);
-  }
 };
+
 
 const deleteUser = (req, res) => {
   userModel.findByIdAndRemove({ _id: req.params.id }).then((result) => {

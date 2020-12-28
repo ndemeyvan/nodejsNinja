@@ -1,5 +1,6 @@
 const express = require('express');
 const Authcontroller = require('../controller/AuthController')
+const authMiddleware = require("../middleware/authMiddleware");
 const router = express.Router();
 
 
@@ -7,7 +8,7 @@ router.post('/register',Authcontroller.register);
 
 router.post('/login',Authcontroller.login); 
 
-router.get('/users',Authcontroller.getAllUser)
+router.get("/users", authMiddleware.requireAuth, Authcontroller.getAllUser);
 
 router.delete('/users/:id',Authcontroller.deleteUser)
 

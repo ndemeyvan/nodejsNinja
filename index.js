@@ -9,7 +9,7 @@ app.use(express.json());
 
 mongoose.connect(
   "mongodb://localhost/blog",
-  { useUnifiedTopology: true ,useNewUrlParser: true} ,
+  { useUnifiedTopology: true ,useNewUrlParser: true, usecreateIndexes:true} ,
   () => {
     console.log("Connexion a la base de donnee effectue");
     app.listen(3000, () => {

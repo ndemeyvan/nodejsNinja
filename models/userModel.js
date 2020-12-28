@@ -32,8 +32,6 @@ userSchema.pre("save", function (next) {
   });
 });
 
-
-// static method to login user
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
@@ -45,6 +43,5 @@ userSchema.statics.login = async function (email, password) {
   }
   throw Error("incorrect email");
 };
-
 const user = mongoose.model("users", userSchema);
 module.exports = user;
